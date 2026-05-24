@@ -1,0 +1,35 @@
+name: tictactoe_app
+description: Tic Tac Toe Online — real-time multiplayer with AI bots.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+  flutter: ">=3.19.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.6
+
+  # State management — Provider is the simplest reactive option that
+  # plays well with Flutter's widget tree (chosen over Bloc/Riverpod
+  # for beginner friendliness, per the brief).
+  provider: ^6.1.2
+
+  # REST + WebSocket
+  http: ^1.2.2
+  web_socket_channel: ^3.0.1
+
+  # Local key-value storage for JWT tokens (so auto-login works).
+  shared_preferences: ^2.3.2
+
+  # JWT decode (read exp / sub without verifying signature — that's
+  # the server's job).
+  jwt_decoder: ^2.0.1
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
