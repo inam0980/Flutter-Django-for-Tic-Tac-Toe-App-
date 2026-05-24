@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../providers/auth_provider.dart';
 import '../theme.dart';
+import 'create_room_screen.dart';
 import 'history_screen.dart';
+import 'join_room_screen.dart';
 import 'leaderboard_screen.dart';
 import 'lobby_screen.dart';
 import 'login_screen.dart';
@@ -58,9 +60,8 @@ class HomeScreen extends StatelessWidget {
               _PrimaryAction(
                 icon: Icons.bolt,
                 title: 'Quick Match',
-                subtitle: 'Online — get paired instantly',
-                onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => const MatchmakingScreen())),
+                subtitle: 'Online — random, create or join a room',
+                onTap: () => _showQuickMatchPicker(context),
               ),
               const SizedBox(height: 10),
               _PrimaryAction(
@@ -93,6 +94,82 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showQuickMatchPicker(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: NeonColors.bgSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (_) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: NeonColors.bgElevated,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text('Quick Match',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: NeonColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.0,
+                  )),
+              const SizedBox(height: 14),
+              _QuickMatchTile(
+                icon: Icons.shuffle,
+                label: 'Random Match',
+                subtitle: 'Get paired with anyone online',
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const MatchmakingScreen(),
+                  ));
+                },
+              ),
+              const SizedBox(height: 8),
+              _QuickMatchTile(
+                icon: Icons.add_circle_outline,
+                label: 'Create Room',
+                subtitle: 'Get a 4-digit code to share with a friend',
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const CreateRoomScreen(),
+                  ));
+                },
+              ),
+              const SizedBox(height: 8),
+              _QuickMatchTile(
+                icon: Icons.vpn_key,
+                label: 'Join Room',
+                subtitle: "Enter your friend's 4-digit code",
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => const JoinRoomScreen(),
+                  ));
+                },
               ),
             ],
           ),
@@ -177,14 +254,24 @@ class _TopBar extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 42,
-          height: 42,
+          width: 44,
+          height: 44,
           decoration: BoxDecoration(
-            color: NeonColors.bgCard,
             shape: BoxShape.circle,
             border: Border.all(color: NeonColors.orange, width: 1.5),
+            boxShadow: [
+              BoxShadow(
+                color: NeonColors.orange.withValues(alpha: 0.35),
+                blurRadius: 14,
+              ),
+            ],
           ),
-          child: const Icon(Icons.person, color: NeonColors.orange, size: 22),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/logo.png',
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -388,6 +475,72 @@ class _SquareTile extends StatelessWidget {
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.6)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _QuickMatchTile extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  const _QuickMatchTile({
+    required this.icon,
+    required this.label,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: NeonColors.bgCard,
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: NeonColors.bgElevated, width: 1),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: NeonColors.orange.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, color: NeonColors.orange, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(label,
+                        style: const TextStyle(
+                            color: NeonColors.textPrimary,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w800)),
+                    const SizedBox(height: 2),
+                    Text(subtitle,
+                        style: const TextStyle(
+                            color: NeonColors.textMuted, fontSize: 11)),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right,
+                  color: NeonColors.textMuted, size: 20),
             ],
           ),
         ),

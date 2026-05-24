@@ -6,14 +6,20 @@
 /// deployed URL.
 class AppConfig {
   /// HTTP base URL for REST APIs.
-  /// 10.0.2.2 = Android emulator's alias for host machine.
-  /// 192.168.1.105 = dev laptop's LAN IP (for physical phone on same WiFi).
-  static const String apiBaseUrl =
-      String.fromEnvironment('API_BASE', defaultValue: 'http://192.168.1.105:8000');
+  /// Default: production Render deployment (works on any network).
+  /// Override at build time for local dev:
+  ///   flutter run --dart-define=API_BASE=http://10.0.2.2:8000 \
+  ///              --dart-define=WS_BASE=ws://10.0.2.2:8000
+  static const String apiBaseUrl = String.fromEnvironment(
+    'API_BASE',
+    defaultValue: 'https://tictactoe-backend-729l.onrender.com',
+  );
 
   /// WebSocket base URL. Same host as API, just ws:// / wss://.
-  static const String wsBaseUrl =
-      String.fromEnvironment('WS_BASE', defaultValue: 'ws://192.168.1.105:8000');
+  static const String wsBaseUrl = String.fromEnvironment(
+    'WS_BASE',
+    defaultValue: 'wss://tictactoe-backend-729l.onrender.com',
+  );
 
   static const String appName = 'inamtactoe';
 }
