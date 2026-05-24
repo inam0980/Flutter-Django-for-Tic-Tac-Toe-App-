@@ -50,9 +50,31 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 32),
-                  const GameTitle(fontSize: 34),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Container(
+                      width: 180,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: [
+                          BoxShadow(
+                            color: NeonColors.orange.withValues(alpha: 0.35),
+                            blurRadius: 40,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        child: Image.asset(
+                          'assets/logo.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   const Text(
                     'SIGN IN TO PLAY',
                     textAlign: TextAlign.center,
